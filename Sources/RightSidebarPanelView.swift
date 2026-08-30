@@ -451,6 +451,7 @@ struct RightSidebarPanelView: View {
                 mode: fileExplorerState.mode,
                 rootDirectory: nil,
                 windowAppearance: windowAppearance,
+                pointerEventRouter: app.dockPointerEventRouter,
                 rightSidebarOwnsInputFocus: fileExplorerState.rightSidebarOwnsInputFocus,
                 unreadSource: TerminalNotificationStore.shared.sidebarUnread
             )
