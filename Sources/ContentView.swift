@@ -8360,6 +8360,24 @@ struct ContentView: View {
             }
             return performDockShortcutCommand(command)
         }
+        let performDockPanelZoom: (DockPanelZoomCommand) -> Bool = {
+            command in
+            guard let dockSurfaceStore,
+                  let dockSurfacePanelId else {
+                return false
+            }
+            guard focusCapturedDockSurface() else {
+                NSSound.beep()
+                return true
+            }
+            if !dockSurfaceStore.performDockPanelZoom(
+                command,
+                panelId: dockSurfacePanelId
+            ) {
+                NSSound.beep()
+            }
+            return true
+        }
 
         registry.register(commandId: "palette.newWorkspace") {
             AppDelegate.shared?.performNewWorkspaceAction(
@@ -8940,6 +8958,7 @@ struct ContentView: View {
             }
         }
         registry.register(commandId: "palette.browserZoomIn") {
+            if performDockPanelZoom(.increase) { return }
             let handled = browserTarget != nil
                 ? performBrowserAction(.zoomIn)
                 : tabManager.zoomInFocusedBrowserOrTextFilePreview()
@@ -8948,6 +8967,7 @@ struct ContentView: View {
             }
         }
         registry.register(commandId: "palette.browserZoomOut") {
+            if performDockPanelZoom(.decrease) { return }
             let handled = browserTarget != nil
                 ? performBrowserAction(.zoomOut)
                 : tabManager.zoomOutFocusedBrowserOrTextFilePreview()
@@ -8956,6 +8976,7 @@ struct ContentView: View {
             }
         }
         registry.register(commandId: "palette.browserZoomReset") {
+            if performDockPanelZoom(.reset) { return }
             let handled = browserTarget != nil
                 ? performBrowserAction(.resetZoom)
                 : tabManager.resetZoomFocusedBrowserOrTextFilePreview()
@@ -8964,16 +8985,19 @@ struct ContentView: View {
             }
         }
         registry.register(commandId: "palette.markdownZoomIn") {
+            if performDockPanelZoom(.increase) { return }
             if !tabManager.zoomInFocusedMarkdown() {
                 NSSound.beep()
             }
         }
         registry.register(commandId: "palette.markdownZoomOut") {
+            if performDockPanelZoom(.decrease) { return }
             if !tabManager.zoomOutFocusedMarkdown() {
                 NSSound.beep()
             }
         }
         registry.register(commandId: "palette.markdownZoomReset") {
+            if performDockPanelZoom(.reset) { return }
             if !tabManager.resetZoomFocusedMarkdown() {
                 NSSound.beep()
             }

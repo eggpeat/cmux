@@ -1786,6 +1786,38 @@ struct DockShortcutRoutingTests {
         #expect(coordinator.phase == .idle)
     }
 
+    @Test("Clicking the already-selected Dock tab retires its pointer origin")
+    @MainActor
+    func unchangedDockSelectionRetiresPointerOriginOnMouseUp() throws {
+        let coordinator = DockPointerInteractionCoordinator()
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 320, height: 240),
+            styleMask: [.titled],
+            backing: .buffered,
+            defer: false
+        )
+        defer { window.close() }
+
+        let pane = PaneID()
+        let tab = TabID()
+        coordinator.begin(
+            window: window,
+            initialPaneID: pane,
+            initialTabID: tab
+        )
+        #expect(
+            coordinator.consumeSelection(
+                in: window,
+                paneID: pane,
+                tabID: tab
+            ) == nil
+        )
+        #expect(coordinator.phase == .pressed)
+
+        coordinator.markReleased(in: window)
+        #expect(coordinator.phase == .idle)
+    }
+
     @Test("Dock pointer hit policy keeps tab accessories out of focus ownership")
     @MainActor
     func dockPointerHitPolicyClassifiesOwnershipSignals() {

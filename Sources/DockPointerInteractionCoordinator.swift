@@ -159,6 +159,7 @@ final class DockPointerInteractionCoordinator {
     private var originWindowID: ObjectIdentifier?
     private var initialPaneID: PaneID?
     private var initialTabID: TabID?
+    private var sawUnchangedSelectionCallback = false
 
     /// Starts a pointer transaction at the Dock boundary.
     func begin(
@@ -174,6 +175,7 @@ final class DockPointerInteractionCoordinator {
         originWindowID = ObjectIdentifier(window)
         self.initialPaneID = initialPaneID
         self.initialTabID = initialTabID
+        sawUnchangedSelectionCallback = false
         phase = .pressed
     }
 
@@ -184,6 +186,13 @@ final class DockPointerInteractionCoordinator {
             return
         }
         phase = .released
+        // Bonsplit emits an unchanged focus callback when the user clicks the
+        // already-selected tab. No later callback can identify a different
+        // target in that sequence, so do not leave a released origin armed
+        // until an unrelated programmatic mutation happens.
+        if sawUnchangedSelectionCallback {
+            cancel()
+        }
     }
 
     /// Cancels an unconsumed transaction at a real lifecycle boundary.
@@ -194,6 +203,7 @@ final class DockPointerInteractionCoordinator {
         originWindowID = nil
         initialPaneID = nil
         initialTabID = nil
+        sawUnchangedSelectionCallback = false
     }
 
     /// Consumes the origin for a selection callback whose pane/tab changed.
@@ -218,6 +228,8 @@ final class DockPointerInteractionCoordinator {
             // would let a later programmatic reselection consume the origin.
             if phase == .released {
                 cancel()
+            } else {
+                sawUnchangedSelectionCallback = true
             }
             return nil
         }
