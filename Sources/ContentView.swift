@@ -8309,20 +8309,23 @@ struct ContentView: View {
                     .flatMap { app.windowId(for: $0) }
                     .flatMap { app.mainWindow(for: $0) }
         }
-        let focusCapturedDockSurface: () -> Bool = {
+        let validateCapturedDockSurface: () -> Bool = {
             guard let dockSurfaceTarget,
-                  let app = AppDelegate.shared else { return false }
-            let ownerWindow = dockOwnerWindow()
-            guard app.isCurrentCommandPaletteDockTarget(
-                dockSurfaceTarget.dock,
-                panelId: dockSurfaceTarget.panelId,
-                preferredWindow: ownerWindow
-            ) else {
+                  let app = AppDelegate.shared else {
                 return false
             }
+            return app.isCurrentCommandPaletteDockTarget(
+                dockSurfaceTarget.dock,
+                panelId: dockSurfaceTarget.panelId,
+                preferredWindow: dockOwnerWindow()
+            )
+        }
+        let focusCapturedDockSurface: () -> Bool = {
+            guard let dockSurfaceTarget,
+                  validateCapturedDockSurface() else { return false }
             dockSurfaceTarget.dock.focusPanelFromDockInteraction(
                 dockSurfaceTarget.panelId,
-                window: ownerWindow
+                window: dockOwnerWindow()
             )
             return true
         }
@@ -8796,7 +8799,7 @@ struct ContentView: View {
         }
         registry.register(commandId: "palette.clearTabName") {
             if let dockSurfaceStore, let dockSurfacePanelId {
-                guard focusCapturedDockSurface() else {
+                guard validateCapturedDockSurface() else {
                     NSSound.beep()
                     return
                 }
@@ -8835,7 +8838,7 @@ struct ContentView: View {
         }
         registry.register(commandId: "palette.toggleTabPin") {
             if let dockSurfaceStore, let dockSurfacePanelId {
-                guard focusCapturedDockSurface() else {
+                guard validateCapturedDockSurface() else {
                     NSSound.beep()
                     return
                 }
@@ -8866,7 +8869,7 @@ struct ContentView: View {
         }
         registry.register(commandId: "palette.toggleTabUnread") {
             if let dockSurfaceStore, let dockSurfacePanelId {
-                guard focusCapturedDockSurface() else {
+                guard validateCapturedDockSurface() else {
                     NSSound.beep()
                     return
                 }
