@@ -1302,7 +1302,8 @@ C0DE71B10000000000000001 /* AppDelegate+AgentChatNotifications.swift in Sources 
 		937700020000000000000001 /* GrokVaultAgentPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937700010000000000000001 /* GrokVaultAgentPersistenceTests.swift */; };
 		4A4842000000000000000009 /* HarborPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A484200000000000000000A /* HarborPanelView.swift */; };
 		4A4842000000000000000007 /* HarborPanelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4842000000000000000008 /* HarborPanelViewModel.swift */; };
-		4A4842000000000000000001 /* HarborSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4842000000000000000002 /* HarborSession.swift */; };
+		4A4842000000000000000011 /* HarborModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4842000000000000000013 /* HarborModel.swift */; };
+		4A4842000000000000000012 /* HarborTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4842000000000000000014 /* HarborTreeNode.swift */; };
 		4A4842000000000000000005 /* HarborSessionDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4842000000000000000006 /* HarborSessionDrag.swift */; };
 		4A4842000000000000000003 /* HarborSessionProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4842000000000000000004 /* HarborSessionProbe.swift */; };
 		4A484200000000000000000D /* HarborSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A484200000000000000000E /* HarborSessionTests.swift */; };
@@ -4202,7 +4203,8 @@ C0DE71B10000000000000002 /* AppDelegate+AgentChatNotifications.swift */ = {isa =
 		937700010000000000000001 /* GrokVaultAgentPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrokVaultAgentPersistenceTests.swift; sourceTree = "<group>"; };
 		4A484200000000000000000A /* HarborPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarborPanelView.swift; sourceTree = "<group>"; };
 		4A4842000000000000000008 /* HarborPanelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarborPanelViewModel.swift; sourceTree = "<group>"; };
-		4A4842000000000000000002 /* HarborSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarborSession.swift; sourceTree = "<group>"; };
+		4A4842000000000000000013 /* HarborModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarborModel.swift; sourceTree = "<group>"; };
+		4A4842000000000000000014 /* HarborTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarborTreeNode.swift; sourceTree = "<group>"; };
 		4A4842000000000000000006 /* HarborSessionDrag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarborSessionDrag.swift; sourceTree = "<group>"; };
 		4A4842000000000000000004 /* HarborSessionProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarborSessionProbe.swift; sourceTree = "<group>"; };
 		4A484200000000000000000E /* HarborSessionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HarborSessionTests.swift; sourceTree = "<group>"; };
@@ -6184,7 +6186,8 @@ B8B056D80000000000000002 /* MobileHostIdentityTests.swift */ = {isa = PBXFileRef
 		4A4842000000000000000010 /* Harbor */ = {
 			isa = PBXGroup;
 			children = (
-				4A4842000000000000000002 /* HarborSession.swift */,
+				4A4842000000000000000013 /* HarborModel.swift */,
+				4A4842000000000000000014 /* HarborTreeNode.swift */,
 				4A4842000000000000000004 /* HarborSessionProbe.swift */,
 				4A4842000000000000000006 /* HarborSessionDrag.swift */,
 				4A4842000000000000000008 /* HarborPanelViewModel.swift */,
@@ -10079,7 +10082,8 @@ B8B056D80000000000000002 /* MobileHostIdentityTests.swift */ = {isa = PBXFileRef
 					A93770010000000000000002 /* GrokSessionLocator+ProcessDiscovery.swift in Sources */,
 				4A4842000000000000000009 /* HarborPanelView.swift in Sources */,
 				4A4842000000000000000007 /* HarborPanelViewModel.swift in Sources */,
-				4A4842000000000000000001 /* HarborSession.swift in Sources */,
+				4A4842000000000000000011 /* HarborModel.swift in Sources */,
+				4A4842000000000000000012 /* HarborTreeNode.swift in Sources */,
 				4A4842000000000000000005 /* HarborSessionDrag.swift in Sources */,
 				4A4842000000000000000003 /* HarborSessionProbe.swift in Sources */,
 					F5320000A1B2C3D4E5F60718 /* HermesAgentIndex.swift in Sources */,

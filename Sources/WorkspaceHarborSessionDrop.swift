@@ -17,14 +17,25 @@ extension Workspace {
         session: HarborSession,
         destination: BonsplitController.ExternalTabDropRequest.Destination
     ) -> Bool {
-        let shellCommand = HarborAttachCommand.shellCommand(for: session)
+        handleHarborItemDrop(item: .legacySession(session), destination: destination)
+    }
+
+    /// Lands one Harbor tree item. A terminal leaf keeps its target identity
+    /// in the attach command, so dragging a pane never silently broadens to an
+    /// unrelated session.
+    @discardableResult
+    func handleHarborItemDrop(
+        item: HarborDragItem,
+        destination: BonsplitController.ExternalTabDropRequest.Destination
+    ) -> Bool {
+        let shellCommand = HarborAttachCommand.shellCommand(for: item)
 #if DEBUG
-        cmuxDebugLog("harbor.drop workspace=\(id.uuidString.prefix(5)) session=\(session.id)")
+        cmuxDebugLog("harbor.drop workspace=\(id.uuidString.prefix(5)) item=\(item.title)")
 #endif
         if TuiTerminalAttachBridge.isManualIOEnabled,
            let terminalID = TuiTerminalAttachBridge.shared.provisionHarborTerminal(
                shellCommand: shellCommand,
-               terminalName: HarborAttachCommand.terminalName(for: session)
+               terminalName: HarborAttachCommand.terminalName(for: item)
            ) {
             switch destination {
             case .insert(let paneId, _):
@@ -45,7 +56,7 @@ extension Workspace {
             }
         }
 #if DEBUG
-        cmuxDebugLog("harbor.drop.fallback session=\(session.id) manualIO=\(TuiTerminalAttachBridge.isManualIOEnabled ? 1 : 0)")
+        cmuxDebugLog("harbor.drop.fallback item=\(item.title) manualIO=\(TuiTerminalAttachBridge.isManualIOEnabled ? 1 : 0)")
 #endif
         switch destination {
         case .insert(let paneId, _):
@@ -70,9 +81,17 @@ extension Workspace {
     /// pane of this workspace as a new tab.
     @discardableResult
     func attachHarborSessionInFocusedPane(session: HarborSession) -> Bool {
+        attachHarborItemInFocusedPane(item: .legacySession(session))
+    }
+
+    /// Attaches a terminal leaf or a session-level fallback in the selected
+    /// workspace. This is the shared action used by Harbor double-click,
+    /// Return, and context-menu commands.
+    @discardableResult
+    func attachHarborItemInFocusedPane(item: HarborDragItem) -> Bool {
         guard let paneId = bonsplitController.focusedPaneId ?? bonsplitController.allPaneIds.first else {
             return false
         }
-        return handleHarborSessionDrop(session: session, destination: .insert(targetPane: paneId, targetIndex: nil))
+        return handleHarborItemDrop(item: item, destination: .insert(targetPane: paneId, targetIndex: nil))
     }
 }
