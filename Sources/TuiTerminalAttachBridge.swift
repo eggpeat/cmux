@@ -323,6 +323,13 @@ final class TuiTerminalAttachBridge {
         }
     }
 
+    /// Rolls back a Harbor terminal when pane creation fails after the daemon
+    /// already created it. Without this cleanup, a rejected drop leaves an
+    /// unreachable terminal in the daemon's durable catalog.
+    func closeProvisionedHarborTerminal(terminalID: String) {
+        closeTerminalForClosedSurface(terminalID: terminalID)
+    }
+
     /// The attach command for a terminal id this bridge (or a previous app
     /// run) provisioned.
     func attachCommand(terminalID: String) -> String {
