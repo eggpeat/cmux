@@ -54,6 +54,7 @@ import {
   vmActiveLimitExceededResponse,
   vmRequiresProResponse,
 } from "../../../services/vms/routeHelpers";
+import { vmRequestLocale } from "../../../services/vms/vmErrorMessages";
 import { captureVmProvisionOutcome } from "../../../services/vms/observability";
 import {
   createVm,
@@ -498,7 +499,7 @@ export async function POST(request: Request): Promise<Response> {
               details: { amount: err.amount },
             });
           }
-          const workflowError = vmWorkflowErrorResponse(err);
+          const workflowError = await vmWorkflowErrorResponse(err, { locale: vmRequestLocale(request) });
           if (workflowError) return workflowError;
           throw err;
         }

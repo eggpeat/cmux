@@ -923,6 +923,7 @@ function beginCreateWithLazyProviderRefresh(
   );
 }
 
+/** Refresh live provider state before retrying an active-VM limit conflict. */
 function refreshActiveLimitProviderStatuses(
   repo: VmRepositoryShape,
   providers: VmProviderGatewayShape,
@@ -951,7 +952,7 @@ function refreshActiveLimitProviderStatuses(
       return reconcileObservedProviderStatus(repo, getStatus, vm, "provider_status_refresh").pipe(
         Effect.asVoid,
       );
-    }, { concurrency: "unbounded", discard: true });
+    }, { concurrency: 10, discard: true });
   });
 }
 
